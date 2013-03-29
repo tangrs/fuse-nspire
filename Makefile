@@ -6,7 +6,7 @@ CFLAGS 	+= $(shell pkg-config libnspire --cflags)
 CFLAGS_OSXFUSE := -D__FreeBSD__=10 -D_FILE_OFFSET_BITS=64 -DFUSE_USE_VERSION=26
 CFLAGS_OSXFUSE += -I/usr/local/include/osxfuse/fuse
 
-LIBS	:= -lfuse
+LIBS	:= -lfuse_ino64
 LIBS	+= -framework CoreServices -framework IOKit
 LIBS	+= $(shell pkg-config libnspire --libs)
 

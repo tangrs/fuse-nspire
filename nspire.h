@@ -22,4 +22,4 @@ static void device_unlock(struct nsp_ctx *h) {
 	__sync_lock_test_and_set(&h->lock, 0);
 }
 
-#define current_ctx ((struct nsp_ctx*)(fuse_get_context()->private_data))
+//#define current_ctx ((struct nsp_ctx*)(fuse_get_context()->private_data))
