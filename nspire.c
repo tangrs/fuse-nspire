@@ -1,7 +1,5 @@
 #include "nspire.h"
 
-struct nsp_ctx *current_ctx;
-
 static int std_libnspire_err(int ret) {
 	switch (ret) {
 	case NSPIRE_ERR_SUCCESS:	return 0;
@@ -182,17 +180,17 @@ static struct fuse_operations nspire_fs = {
 int main(int argc, char **argv)
 {
 	int ret;
-	current_ctx = malloc(sizeof(*current_ctx));
-	if (!current_ctx)
+	struct nsp_ctx *ctx = malloc(sizeof(*ctx));
+	if (!ctx)
 		ERR_EXIT("Out of memory\n", -ENOMEM);
-	if ((ret = nspire_init(&current_ctx->handle)))
+	if ((ret = nspire_init(&ctx->handle)))
 		ERR_EXIT(nspire_strerror(ret), std_libnspire_err(ret));
-	current_ctx->lock = 0;
+	ctx->lock = 0;
 
-	ret = fuse_main(argc, argv, &nspire_fs, NULL);
+	ret = fuse_main(argc, argv, &nspire_fs, ctx);
 
-	nspire_free(current_ctx->handle);
-	free(current_ctx);
+	nspire_free(ctx->handle);
+	free(ctx);
 
 	return ret;
 }
