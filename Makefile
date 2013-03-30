@@ -3,7 +3,7 @@ CC	?= gcc
 CFLAGS	:= -O3 -Wall
 CFLAGS 	+= $(shell pkg-config libnspire --cflags)
 
-CFLAGS_OSXFUSE := -D__FreeBSD__=10 -D_FILE_OFFSET_BITS=64 -DFUSE_USE_VERSION=26
+CFLAGS_OSXFUSE := -D_FILE_OFFSET_BITS=64 -DFUSE_USE_VERSION=26
 CFLAGS_OSXFUSE += -I/usr/local/include/osxfuse/fuse
 
 LIBS	:= -lfuse_ino64
