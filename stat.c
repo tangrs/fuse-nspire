@@ -8,8 +8,7 @@ int nsp_statfs(const char* path, struct statvfs *info) {
 	struct nspire_devinfo devinfo;
 	int ret;
 
-	if (!device_trylock(current_ctx))
-		return -EAGAIN;
+	device_lock(current_ctx);
 
 	ret = nspire_device_info(current_ctx->handle, &devinfo);
 	if (ret) {
@@ -35,8 +34,7 @@ int nsp_getattr(const char *path, struct stat *s) {
 	int ret;
 	struct nspire_dir_item i;
 
-	if (!device_trylock(current_ctx))
-		return -EAGAIN;
+	device_lock(current_ctx);
 
 	ret = nspire_attr(current_ctx->handle, path, &i);
 	if (ret) {

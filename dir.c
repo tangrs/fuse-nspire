@@ -7,8 +7,7 @@ int nsp_readdir(const char *path, void *buf, fuse_fill_dir_t filler,
 	int ret, i;
 	struct nspire_dir_info *list;
 
-	if (!device_trylock(current_ctx))
-		return -EAGAIN;
+	device_lock(current_ctx);
 
 	ret = nspire_dirlist(current_ctx->handle, path, &list);
 	if (ret) {
@@ -34,8 +33,7 @@ end:
 int nsp_mkdir(const char* path, mode_t mode) {
 	int ret;
 
-	if (!device_trylock(current_ctx))
-		return -EAGAIN;
+	device_lock(current_ctx);
 
 	ret = nspire_dir_create(current_ctx->handle, path);
 
@@ -46,8 +44,7 @@ int nsp_mkdir(const char* path, mode_t mode) {
 int nsp_rmdir(const char* path) {
 	int ret;
 
-	if (!device_trylock(current_ctx))
-		return -EAGAIN;
+	device_lock(current_ctx);
 
 	ret = nspire_dir_delete(current_ctx->handle, path);
 
@@ -58,8 +55,7 @@ int nsp_rmdir(const char* path) {
 int nsp_rename(const char* src, const char* dst) {
 	int ret;
 
-	if (!device_trylock(current_ctx))
-		return -EAGAIN;
+	device_lock(current_ctx);
 
 	ret = nspire_file_rename(current_ctx->handle, src, dst);
 
@@ -70,8 +66,7 @@ int nsp_rename(const char* src, const char* dst) {
 int nsp_delete(const char* path) {
 	int ret;
 
-	if (!device_trylock(current_ctx))
-		return -EAGAIN;
+	device_lock(current_ctx);
 
 	ret = nspire_file_delete(current_ctx->handle, path);
 

@@ -32,15 +32,13 @@ static struct fuse_operations nspire_fs = {
 	.rmdir		= nsp_rmdir,
 	.rename		= nsp_rename,
 	.statfs		= nsp_statfs,
-	//.truncate = nspire_truncate,
-	//.create = nspire_create,
-	//.open = nspire_open,
-	//.read = nspire_read,
-	//.write = nspire_write,
-	//.release = nspire_release,
-	//.opendir = nsp_opendir,
-	//.releasedir = nspire_releasedir,
-	//.fsync = nspire_fsync
+	.truncate	= nsp_truncate,
+	.create		= nsp_create,
+	.open		= nsp_open,
+	.read		= nsp_read,
+	.write		= nsp_write,
+	.release	= nsp_release,
+	.fsync		= nsp_fsync
 };
 
 
@@ -49,8 +47,7 @@ static struct fuse_operations nspire_fs = {
 		exit(errnum); \
 	} while (0)
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
 	int ret;
 	struct nsp_ctx *ctx = malloc(sizeof(*ctx));
 	if (!ctx)
@@ -58,7 +55,7 @@ int main(int argc, char **argv)
 	if ((ret = nspire_init(&ctx->handle)))
 		ERR_EXIT(nspire_strerror(ret), std_libnspire_err(ret));
 
-	ctx->lock = 0;
+	atomic_init(&ctx->lock);
 
 	ret = fuse_main(argc, argv, &nspire_fs, ctx);
 
