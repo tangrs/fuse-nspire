@@ -1,4 +1,4 @@
-CC	:= gcc
+CC	?= gcc
 
 CFLAGS	:= -O3 -Wall
 CFLAGS 	+= $(shell pkg-config libnspire --cflags)
@@ -10,7 +10,7 @@ LIBS	:= -lfuse_ino64
 LIBS	+= -framework CoreServices -framework IOKit
 LIBS	+= $(shell pkg-config libnspire --libs)
 
-TARGETS = nspire.o
+TARGETS = nspire.o dir.o file.o stat.o
 
 %.o: %.c
 	$(CC) -c $(CFLAGS_OSXFUSE) $(CFLAGS) -o $@ $<
