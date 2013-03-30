@@ -56,3 +56,27 @@ end:
 	device_unlock(current_ctx);
 	return ret;
 }
+
+int nsp_access(const char *path, int mask) {
+	int ret;
+	struct nspire_dir_item i;
+
+	device_lock(current_ctx);
+
+	ret = nspire_attr(current_ctx->handle, path, &i);
+	if (ret) {
+		ret = std_libnspire_err(ret);
+		goto end;
+	}
+
+	if (!current_ctx->allow_bigfile &&
+			i.size > current_ctx->thresh_bigfile) {
+		ret = -EFBIG;
+		goto end;
+	}
+
+	ret = 0;
+end:
+	device_unlock(current_ctx);
+	return ret;
+}

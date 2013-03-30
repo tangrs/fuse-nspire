@@ -33,6 +33,8 @@ struct nsp_ctx {
 	nspire_handle_t *handle;
 	lock_t lock;
 
+	int allow_bigfile;
+	int thresh_bigfile;
 };
 
 int std_libnspire_err(int ret);
@@ -54,5 +56,6 @@ int nsp_read(const char *path, char *buf, size_t size, off_t offset,
 		struct fuse_file_info *fi);
 int nsp_fsync(const char* path, int isdatasync, struct fuse_file_info* fi);
 int nsp_release(const char* path, struct fuse_file_info* fi);
+int nsp_access(const char* path, int);
 
 #endif

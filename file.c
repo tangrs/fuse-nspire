@@ -32,6 +32,12 @@ int nsp_truncate(const char *path, off_t size) {
 		goto end;
 	}
 
+	if (!current_ctx->allow_bigfile &&
+			i.size > current_ctx->thresh_bigfile) {
+		ret = -EFBIG;
+		goto end;
+	}
+
 	buffer = malloc(size);
 	if (!buffer) {
 		ret = -ENOMEM;
@@ -70,6 +76,12 @@ int nsp_open(const char *path, struct fuse_file_info *fi) {
 	ret = nspire_attr(current_ctx->handle, path, &i);
 	if (ret) {
 		ret = std_libnspire_err(ret);
+		goto end;
+	}
+
+	if (!current_ctx->allow_bigfile &&
+			i.size > current_ctx->thresh_bigfile) {
+		ret = -EFBIG;
 		goto end;
 	}
 
